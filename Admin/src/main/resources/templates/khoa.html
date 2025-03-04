@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: h"/>
+<head>
+    <title>Admin | Khoa</title>
+</head>
+<body onload="showToast()">
+
+<!-- Start Left menu area -->
+<div th:replace="leftmenu :: left_menu"></div>
+<!-- End Left menu area -->
+
+<div class="all-content-wrapper">
+    <div class="header-advance-area">
+
+        <!-- Start Welcome area -->
+        <div th:replace="header :: header"></div>
+        <!-- End Welcome area -->
+
+        <!-- Start Toast area -->
+        <div id="toast">
+
+        </div>
+        <li id="mes" hidden th:text="${mess}"></li>
+        <li id="suc_err" hidden th:text="${suc_err}"></li>
+        <!-- End Toast area -->
+
+        <!-- Static Table Start -->
+        <div class="product-status mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form th:action="@{khoa/deleteKhoas}" method="get">
+                            <div class="product-status-wrap drp-lst">
+                                <div class="sparkline13-hd">
+                                    <div class="main-sparkline13-hd">
+                                        <h1></h1>
+                                        <a id="createKhoaBtn" class="btn btn-info">Thêm khoa</a>
+                                        <a style="margin-top: -3px"
+                                           class="btn btn-primary glyphicon glyphicon-import btnImportFile"></a>
+                                        <button type="submit" class="btn btn-danger btn-custon-rounded-four">
+                                            <span>Xóa</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="sparkline13-graph">
+                                    <div class="datatable-dashv1-list custom-datatable-overright">
+                                        <table id="table" data-toggle="table"
+                                               data-key-events="true" data-resizable="true" data-cookie="true"
+                                               data-cookie-id-table="saveId" data-show-export="true"
+                                               data-click-to-select="true" data-toolbar="#toolbar" class="tbl">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    <div align="center">
+                                                        <i class="fa fa-check"></i>
+                                                    </div>
+                                                </th>
+<!--                                                <th>STT</th>-->
+                                                <th>Mã khoa</th>
+                                                <th>Tên khoa</th>
+                                                <th>Mô tả</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="khoa, status: ${khoas}">
+                                                <td><input type="checkbox" class="checkbox" th:name="maKhoa"
+                                                           th:value="${khoa.getMaKhoa()}"></td>
+<!--                                                <td th:text="${status.index + 1}"></td>-->
+                                                <td th:text="${khoa.getMaKhoa()}"></td>
+                                                <td th:text="${khoa.getTenKhoa()}"></td>
+                                                <td th:text="${khoa.getMoTa()}"></td>
+                                                <td><a class="btnUpdateKhoa btn btn-warning"
+                                                       th:href="@{khoa/findKhoa(maKhoa=${khoa.maKhoa})}">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pull-right pagination">
+                                            <ul class="pagination">
+                                                <li class="page-pre">
+                                                    <a th:href="@{khoa(pageIndex=${currentPage - 1})}">‹</a>
+                                                </li>
+                                                <li class="page-number"
+                                                    th:each="i : ${#numbers.sequence(0, totalPage - 1)}"
+                                                    th:classappend="${currentPage}==${i}?'active':''">
+                                                    <a th:href="@{khoa(pageIndex=${i})}" th:text="${i + 1}"></a>
+                                                </li>
+                                                <li class="page-next">
+                                                    <a th:href="@{khoa(pageIndex=${currentPage + 1})}">›</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="myForm">
+            <form th:action="@{/khoa}" method="post" th:object="${khoa}">
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="text-center" style="color: white;">
+                                    <h3>THÔNG TIN KHOA</h3>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="maKhoa" value="" th:field="*{maKhoa}">
+                                <div class="form-group">
+                                    <label for="tenKhoa">Tên khoa</label>
+                                    <div><input type="text" id="tenKhoa" value=""  th:field="*{tenKhoa}"
+                                                class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="moTa" class="col-3">Mô tả</label>
+                                    <div><input type="text" id="moTa" value="" th:field="*{moTa}"
+                                                class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Lưu thông tin" class="col-12 btn btn-success"
+                                           id="btnLuu" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Start Modal Import area -->
+        <div class="myForm1">
+            <form th:action="@{/khoa/upload}" method="post" enctype="multipart/form-data">
+                <div class="modal fade" id="myModalImportFile" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="text-center" style="color: white;">
+                                    <h3>UPLOAD FILE</h3>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div style="border-radius: 10%">
+                                    <input type="file" th:name="fileUpload"
+                                           class="form-control">
+                                    <br>
+                                    <button type="submit" class="form-control btn btn-primary">Tải lên</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- End Modal Import area -->
+
+    </div>
+</div>
+
+<div th:replace="header :: script"></div>
+
+</body>
+</html>

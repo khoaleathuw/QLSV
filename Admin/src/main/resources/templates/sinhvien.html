@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: h"/>
+<head>
+    <title>Admin | Sinh viên</title>
+</head>
+
+<body onload="showToast()">
+
+<!-- Start Left menu area -->
+<div th:replace="leftmenu :: left_menu"></div>
+<!-- End Left menu area -->
+
+<div class="all-content-wrapper">
+    <div class="header-advance-area">
+
+        <!-- Start Welcome area -->
+        <div th:replace="header :: header"></div>
+        <!-- End Welcome area -->
+
+        <!-- Start Toast area -->
+        <div id="toast">
+
+        </div>
+        <li id="mes" hidden th:text="${mess}"></li>
+        <li id="suc_err" hidden th:text="${suc_err}"></li>
+        <!-- End Toast area -->
+
+        <!-- Start Search-->
+        <br>
+        <div class="breadcome-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcome-heading">
+                                        <form th:action="@{/sinhVien}" method="get" role="search"
+                                              class="sr-input-func">
+                                            <input type="text" name="keyword"
+                                                   th:value="${keyword}"
+                                                   placeholder="Tìm kiếm..."
+                                                   class="search-int form-control">
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcome-heading" style="float: right">
+                                        <form th:action="@{sinhVien}" method="get">
+                                            <select th:name="mk" onchange="this.form.submit()" class="form-control"
+                                                    style="width: 300px;">
+                                                <option th:value="null" th:selected="${mk == null}">Tất cả</option>
+                                                <option th:each="k, stt: ${khoas}"
+                                                        th:value="${k.getMaKhoa()}"
+                                                        th:text="${k.getTenKhoa()}"
+                                                        th:selected="${mk == k.getMaKhoa()}"></option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Search-->
+
+        <!-- Static Table Start -->
+        <div class="product-status mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form th:action="@{/sinhVien/deleteSinhViens}" method="get">
+                            <div class="product-status-wrap drp-lst">
+                                <div class="sparkline13-hd">
+                                    <h1></h1>
+                                    <a class="btn btn-info createBtn">Thêm sinh viên</a>
+                                    <a style="margin-top: -3px" class="btn btn-primary glyphicon glyphicon-import btnImportFile"></a>
+                                    <button type="submit" class="btn btn-danger btn-custon-rounded-four">
+                                        <span>Xóa</span>
+                                    </button>
+                                </div>
+
+                                <div class="sparkline13-graph">
+                                    <div class="datatable-dashv1-list custom-datatable-overright">
+                                        <table id="table" data-toggle="table"
+                                               data-key-events="true" data-resizable="true" data-cookie="true"
+                                               data-cookie-id-table="saveId" data-show-export="true"
+                                               data-click-to-select="true" data-toolbar="#toolbar" class="tbl">
+                                            <thead>
+
+                                            <tr>
+                                                <th>
+                                                    <div align="center">
+                                                        <i class="fa fa-check"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="stt">STT</th>
+                                                <th class="masv">Mã sinh viên</th>
+                                                <th>Tên sinh viên</th>
+                                                <th>Bậc đào tạo</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Giới tính</th>
+                                                <th>Email</th>
+                                                <th>Ngày sinh</th>
+                                                <th>Ngày vào trường</th>
+                                                <th>Số CMND</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Khoa</th>
+                                                <th>Lớp</th>
+                                                <th>Chuyên ngành</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="sv, stt: ${sinhViens}">
+                                                <td><input type="checkbox" class="checkbox" th:name="idSV"
+                                                           th:value="${sv.getMaSV()}"></td>
+                                                <td class="stt" th:text="${stt.index + 1}"></td>
+                                                <td class="masv" th:text="${sv.getMaSV()}"></td>
+                                                <td th:text="${sv.getTenSV()}"></td>
+                                                <td th:text="${sv.getBacDaoTao()}"></td>
+                                                <td th:text="${sv.getDiaChi()}"></td>
+                                                <td th:text="${sv.isGioiTinh() == true ? 'Nam' : 'Nữ'}"></td>
+                                                <td th:text="${sv.getEmail()}"></td>
+                                                <td th:text="${#dates.format(sv.getNgaySinh(), 'dd/MM/yyyy')}"></td>
+                                                <td th:text="${#dates.format(sv.getNgayVaoTruong(), 'dd/MM/yyyy')}"></td>
+                                                <td th:text="${sv.getSoCMND()}"></td>
+                                                <td th:text="${sv.getSoDienThoai()}"></td>
+
+                                                <td th:if="${sv.getKhoa() != null}"
+                                                    th:text="${sv.getKhoa().getTenKhoa()}"></td>
+                                                <td th:if="${sv.getLopHoc() != null}"
+                                                    th:text="${sv.getLopHoc().getTenLop()}"></td>
+                                                <td th:if="${sv.getChuyenNganh() != null}"
+                                                    th:text="${sv.getChuyenNganh().getTenChuyenNganh()}"></td>
+
+                                                <td th:if="${sv.getKhoa() == null}"></td>
+                                                <td th:if="${sv.getLopHoc() == null}"></td>
+                                                <td th:if="${sv.getChuyenNganh() == null}"></td>
+
+                                                <td>
+                                                    <a class="uBtn btn btn-warning"
+                                                       th:href="@{/sinhVien/findSV(id=${sv.maSV})}">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pull-right pagination">
+                                            <ul class="pagination">
+                                                <li class="page-pre">
+                                                    <a th:if="${mk != null}"
+                                                       th:href="@{sinhVien(mk=${mk},pageIndex=${currentPage - 1})}">‹</a>
+                                                    <a th:if="${keyword == null && mk == null || keyword == ''}"
+                                                       th:href="@{sinhVien(pageIndex=${currentPage - 1})}">‹</a>
+                                                    <a th:if="${keyword != null && keyword != ''}"
+                                                       th:href="@{sinhVien(keyword=${keyword},pageIndex=${currentPage - 1})}">‹</a>
+                                                </li>
+                                                <li class="page-number"
+                                                    th:each="i : ${#numbers.sequence(0, totalPage - 1)}"
+                                                    th:classappend="${currentPage}==${i}?'active':''">
+                                                    <a th:if="${keyword != null && keyword != ''}"
+                                                       th:href="@{sinhVien(keyword=${keyword},pageIndex=${i})}"
+                                                       th:text="${i + 1}"></a>
+                                                    <a th:if="${mk != null}"
+                                                       th:href="@{sinhVien(mk=${mk},pageIndex=${i})}"
+                                                       th:text="${i + 1}"></a>
+                                                    <a th:if="${keyword == null && mk == null || keyword == ''}"
+                                                       th:href="@{sinhVien(pageIndex=${i})}" th:text="${i + 1}"></a>
+                                                </li>
+                                                <li class="page-next">
+                                                    <a th:if="${keyword == null && mk == null || keyword == ''}"
+                                                       th:href="@{sinhVien(pageIndex=${currentPage + 1})}">›</a>
+                                                    <a th:if="${keyword != null && keyword != ''}"
+                                                       th:href="@{sinhVien(keyword=${keyword},pageIndex=${currentPage + 1})}">›</a>
+                                                    <a th:if="${mk != null}"
+                                                       th:href="@{sinhVien(mk=${mk},pageIndex=${currentPage + 1})}">›</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="myForm">
+            <form th:action="@{/sinhVien}" method="post" th:object="${sinhVien}">
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="text-center" style="color: white;">
+                                    <h3>THÔNG TIN SINH VIÊN</h3>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="myId" value="" th:field="*{maSV}">
+                                <input type="hidden" id="myPass" value="" th:field="*{password}">
+                                <input type="hidden" id="myRole" value="" th:field="*{roleName}">
+                                <div class="col-sm-12" style="padding-top: 20px;">
+                                    <div class="form-group col-sm-6">
+                                        <label>Tên sinh viên</label>
+                                        <div>
+                                            <input type="text" id="tensv" value="" th:field="*{tenSV}"
+                                                   class="form-control" placeholder="Ví dụ: Nguyễn Văn A">
+                                            <span class="vl" id="s1"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Số CMND</label>
+                                        <div>
+                                            <input type="text" id="cmnd" value="" th:field="*{soCMND}"
+                                                   class="form-control" placeholder="Ví dụ: 123456789 (hoặc căn cước)">
+                                            <span class="vl" id="s2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group col-sm-3">
+                                        <label>Giới tính</label>
+                                        <div style="margin-top: 10px;">
+                                            <input type="radio" id="male" value="" name="rad" th:field="*{gioiTinh}"
+                                                   th:value="true">&nbsp;Nam
+                                            &nbsp;&nbsp;
+                                            <input type="radio" id="female" value="" name="rad" th:field="*{gioiTinh}"
+                                                   th:value="false">&nbsp;Nữ
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>Bậc đào tạo</label>
+                                        <div>
+                                            <!--                                            <input type="text" id="bdt" value="" th:field="*{bacDaoTao}"-->
+                                            <!--                                                   placeholder="Cao Đẳng, Đại Học, ..."-->
+                                            <!--                                                   class="form-control">-->
+                                            <select value="" id="bdt" th:field="*{bacDaoTao}" class="form-control">
+                                                <option value="">Chọn bậc đào tạo</option>
+                                                <option value="Đại học">Đại học</option>
+                                                <option value="Cao đẳng">Cao đẳng</option>
+                                                <option value="Trung cấp">Trung cấp</option>
+<!--                                                <option value="Thạc sĩ">Thạc sĩ</option>-->
+<!--                                                <option value="Tiến sĩ">Tiến sĩ</option>-->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>Ngày vào trường</label>
+                                        <div>
+                                            <input type="date" id="nvt" value="" th:field="*{{ngayVaoTruong}}"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>Ngày sinh</label>
+                                        <div>
+                                            <input type="date" id="birthDate" value="" th:field="*{{ngaySinh}}"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group col-sm-6">
+                                        <label>Số điện thoại</label>
+                                        <div><input type="text" id="phone" value="" th:field="*{soDienThoai}"
+                                                    class="form-control" placeholder="Ví dụ: XXXX XXX XXX">
+                                            <span class="vl" id="s3"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Chuyên ngành</label>
+                                        <div>
+                                            <select value="" id="chuyenN" th:field="*{chuyenNganh.maChuyenNganh}"
+                                                    class="form-control">
+                                                <option value="0">Chọn chuyên ngành</option>
+                                                <option th:each="cn, stt: ${chuyenNganhs}"
+                                                        th:value="${cn.getMaChuyenNganh()}"
+                                                        th:text="${cn.getTenChuyenNganh()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group col-sm-6">
+                                        <label>Lớp</label>
+                                        <div>
+                                            <select id="classRoom" value="" th:field="*{lopHoc.maLop}"
+                                                    class="form-control">
+                                                <option value="0">Chọn lớp học</option>
+                                                <option th:each="lh, stt: ${lopHocs}"
+                                                        th:value="${lh.getMaLop()}"
+                                                        th:text="${lh.getTenLop()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Khoa</label>
+                                        <div>
+                                            <select id="myKhoa" value="" th:field="*{khoa.maKhoa}"
+                                                    class="form-control">
+                                                <option value="0">Chọn khoa</option>
+                                                <option th:each="k, stt: ${khoas}"
+                                                        th:value="${k.getMaKhoa()}"
+                                                        th:text="${k.getTenKhoa()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group col-sm-6">
+                                        <label>Email</label>
+                                        <div>
+                                            <input id="myEmail" type="text" value="" th:field="*{email}"
+                                                   class="form-control" placeholder="Ví dụ: abc@gmail.com">
+                                            <span class="vl" id="s4"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Địa chỉ</label>
+                                        <div>
+                                            <input id="address" type="text" value="" th:field="*{diaChi}"
+                                                   class="form-control"
+                                                   placeholder="Ví dụ: 123/45 tên đường, quận, phường, tỉnh ">
+                                            <span class="vl" id="s5"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="submit" value="Lưu thông tin" class="btn btn-success" id="btnLuu"
+                                       style="margin-left: 30px; width: 93%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Start Modal Import area -->
+        <div class="myForm1">
+            <form th:action="@{/sinhVien/upload}" method="post" enctype="multipart/form-data">
+                <div class="modal fade" id="myModalImportFile" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="text-center" style="color: white;">
+                                    <h3>UPLOAD FILE</h3>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div style="border-radius: 10%">
+                                    <input type="file" th:name="fileUpload"
+                                           class="form-control">
+                                    <br>
+                                    <button type="submit" class="form-control btn btn-primary">Tải lên</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- End Modal Import area -->
+
+    </div>
+</div>
+
+<div th:replace="header :: script"></div>
+
+</body>
+</html>

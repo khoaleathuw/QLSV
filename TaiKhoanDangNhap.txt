@@ -1,0 +1,11 @@
+Tài khoản sinh viên kỹ thuật phần mềm:
+18000007
+1111
+
+Tài khoản sinh viên kế toán:
+18000031
+1111
+
+Tài khoản admin:
+18000001
+1111

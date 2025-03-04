@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="SV_Fragment :: head"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả học tập</title>
+    <style>
+        .diemred{
+            color: red;
+            cursor: pointer;
+        }
+        .title-color{
+            color: #1da1f2;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: middle !important;
+            padding: 16px 5px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<head th:replace="SV_Fragment :: style-head"/>
+<body>
+<!-- Start Left menu area -->
+<div th:replace="SV_Fragment :: frag_menu_left"/>
+<!-- Content area -->
+<div class="all-content-wrapper">
+    <!--    Logo header mobile -->
+    <div th:replace="SV_Fragment ::frag_icon_mobile"/>
+    <!--    Header area -->
+    <div th:replace="SV_Fragment :: frag_header"/>
+    <!-- Single pro tab review Start-->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="sparkline12-list">
+                        <div class="sparkline12-hd mg-b-30">
+                            <div class=" main-sparkline12-hd">
+                                <div class="row">
+                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                                        <h1>Kết Quả Học Tập</h1>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                        <button type="button" class="btn btn btn-success btn-md"
+                                                th:onclick="window.open('/ket-qua-hoc-tap/in-lich')">
+                                            <span class="glyphicon glyphicon-print"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sparkline12-graph">
+                            <div class="basic-login-form-ad">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow-x: auto">
+                                        <table class="table table-bordered" width="100%">
+                                            <thead>
+                                            <tr class="active">
+                                                <th class="title-color" rowspan="2" style="min-width: 20px;">STT</th>
+                                                <th class="title-color" rowspan="2" style="min-width: 150px;">Mã lớp học
+                                                    phần
+                                                </th>
+                                                <th class="title-color" rowspan="2" style="min-width: 200px;">Tên môn
+                                                    học/học phần
+                                                </th>
+                                                <th class="title-color" rowspan="2">Số tín chỉ</th>
+                                                <th class="title-color" colspan="3">Thường kỳ</th>
+                                                <th class="title-color" rowspan="2">Giữa kỳ</th>
+                                                <th class="title-color" colspan="2">Thực hành</th>
+                                                <th class="title-color" rowspan="2">Cuối kỳ</th>
+                                                <th class="title-color" rowspan="2">Điểm tổng kết</th>
+                                                <th class="title-color" rowspan="2">Thang điểm 4</th>
+                                                <th class="title-color" rowspan="2">Điểm chữ</th>
+                                                <th class="title-color" rowspan="2">Xếp loại</th>
+                                                <th class="title-color" rowspan="2">Ghi chú</th>
+                                            </tr>
+                                            <tr class="active">
+                                                <th class="title-color">1</th>
+                                                <th class="title-color">2</th>
+                                                <th class="title-color">3</th>
+                                                <th class="title-color">1</th>
+                                                <th class="title-color">2</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="scroll">
+                                            <div th:each="hksv, hkStatus: ${HKSV}">
+                                                <div th:each="hk, status: ${HK}">
+                                                    <tr th:if="${hk.getMaHK()} == ${hksv}">
+                                                        <td style="background-color: #F5F5F5; color: #0a6aa1; font-weight: bold"
+                                                            colspan="16" th:text="'HK' + ${hk.getThuTuHocKy()}
+                                                + '(' + ${hk.getNamBatDau()}+ '-' + ${hk.getNamKetThuc()} + ')'"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                        <td class="hidden"></td>
+                                                    </tr>
+                                                </div>
+                                                    <div class="diem" th:each="kqht, status: ${KQHTs}">
+                                                        <tr th:if="${kqht.lopHocPhan.getHocKy().getMaHK()} == ${hksv}">
+                                                            <td th:text="${status.index + 1}"></td>
+                                                            <td th:text="${kqht.getLopHocPhan().getMaLHP()}"></td>
+                                                            <td th:text="${kqht.lopHocPhan.getTenLHP()}"></td>
+                                                            <td th:text="${kqht.lopHocPhan.hocPhan.soTCLT}+${kqht.lopHocPhan.hocPhan.soTCTH}"></td>
+                                                            <td class="diemTK1" th:if="${kqht.getDiemTK1()} != null" th:classappend="${kqht.getDiemTK1()} <= 5.0 ? 'diemred' : ''" th:text="${kqht.getDiemTK1()}"></td>
+                                                            <td th:if="${kqht.getDiemTK1()} == null"></td>
+                                                            <td class="diemTK2" th:if="${kqht.getDiemTK2()} != null" th:classappend="${kqht.getDiemTK2()} <= 5.0 ? 'diemred' : ''"  th:text="${kqht.getDiemTK2()}"></td>
+                                                            <td th:if="${kqht.getDiemTK2()} == null"></td>
+                                                            <td class="diemTK3" th:if="${kqht.getDiemTK3()} != null" th:classappend="${kqht.getDiemTK3()} <= 5.0 ? 'diemred' : ''"  th:text="${kqht.getDiemTK3()}"></td>
+                                                            <td th:if="${kqht.getDiemTK3()} == null"></td>
+                                                            <td class="diemGK" th:if="${kqht.getDiemGK()} != null" th:classappend="${kqht.getDiemGK()} <= 5.0 ? 'diemred' : ''"  th:text="${kqht.getDiemGK()}"></td>
+                                                            <td th:if="${kqht.getDiemGK()} == null"></td>
+                                                            <td class="diemTH1" th:if="${kqht.getDiemTH1()} != null" th:classappend="${kqht.getDiemTH1()} <= 5.0 ? 'diemred' : ''" th:text="${kqht.getDiemTH1()}"></td>
+                                                            <td th:if="${kqht.getDiemTH1()} == null"></td>
+                                                            <td class="diemTH2" th:if="${kqht.getDiemTH2()} != null" th:classappend="${kqht.getDiemTH2()} <= 5.0 ? 'diemred' : ''" th:text="${kqht.getDiemTH2()}"></td>
+                                                            <td th:if="${kqht.getDiemTH2()} == null"></td>
+                                                            <td class="diemCK" th:if="${kqht.getDiemCK()} != null" th:classappend="${kqht.getDiemCK()} <= 5.0 ? 'diemred' : ''" th:text="${kqht.getDiemCK()}"></td>
+                                                            <td th:if="${kqht.getDiemCK()} == null"></td>
+                                                            <td class="diemHe10" th:if="${kqht.getDiemHe10()} != null" th:classappend="${kqht.getDiemHe10()} <= 5.0 ? 'diemred' : ''" th:text="${kqht.getDiemHe10()}"></td>
+                                                            <td th:if="${kqht.getDiemHe10()} == null"></td>
+                                                            <td class="diemHe4" th:text="${kqht.getDiemHe4()}"></td>
+                                                            <td th:if="${kqht.getDiemHe10()} == null"></td>
+                                                            <td th:style="${kqht.getDiemChu()} == 'F' ? 'color: red' : 'color: black'"
+                                                                th:text="${kqht.getDiemChu()}"></td>
+                                                            <td th:style="${kqht.getXepLoai()} == 'Kém' ? 'color: red' : 'color: black'"
+                                                                th:text="${kqht.getXepLoai()}"></td>
+                                                            <td th:style="${kqht.getMoTa()} == 'Học lại' ? 'color: red' : 'color: black'"
+                                                                th:text="${kqht.getMoTa()}"></td>
+                                                        </tr>
+                                                    </div>
+
+                                                </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Script-->
+<div th:replace="SV_Fragment :: script"/>
+</body>
+</html>

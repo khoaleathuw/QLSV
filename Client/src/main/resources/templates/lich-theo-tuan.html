@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="SV_Fragment :: head"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch học theo tuần</title>
+    <!-- calendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css' rel='stylesheet'/>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js'></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css" rel="stylesheet"
+          media="print"/>
+</head>
+<head th:replace="SV_Fragment :: style-head"/>
+<body>
+<!-- Start Left menu area -->
+<div th:replace="SV_Fragment :: frag_menu_left"/>
+<!-- Content area -->
+<div class="all-content-wrapper">
+    <!--    Logo header mobile -->
+    <div th:replace="SV_Fragment ::frag_icon_mobile"/>
+    <!--    Header area -->
+    <div th:replace="SV_Fragment :: frag_header"/>
+    <!-- Single pro tab review Start-->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="sparkline12-list">
+                        <div class="sparkline12-hd mg-b-30">
+                            <div class="main-sparkline12-hd">
+                                <h1>Lịch Học</h1>
+                            </div>
+                        </div>
+                        <div class="sparkline12-graph">
+                            <div class="basic-login-form-ad">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="calender-inner">
+                                            <!--                                            JS Calendar fullcalendar-active.js-->
+                                            <div id='calendar'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Script-->
+<div th:replace="SV_Fragment :: script"/>
+<!-- calendar JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            buttonText: {today: "Hôm nay"},
+            customButtons: {
+                printCalendar: {
+                    text: 'In lịch',
+                    click: function () {
+                        getDate()
+                    }
+                }
+            },
+            locale: 'vi',
+            nowIndicator: true,
+            height: 760,
+            views: {
+                listWeek: {buttonText: 'Sự kiện tuần'},
+                dayGridMonth: {buttonText: 'Tháng'},
+                timeGridWeek: {
+                    buttonText: 'Tuần',
+                    slotMinTime: '6:00:00',
+                    slotMaxTime: '22:00:00',
+                    allDaySlot: false,
+                },
+            },
+            headerToolbar: {
+                left: 'prev,next today printCalendar',
+                center: 'title',
+                right: 'timeGridWeek,listWeek,dayGridMonth'
+            },
+            events: {
+                url: '/lich-theo-tuan/lich-hoc'
+            }
+        });
+        calendar.render();
+
+        function getDate() {
+            let date = calendar.getDate();
+            window.open("/lich-theo-tuan/in-lich?date=" + date.toLocaleDateString());
+        }
+    });
+
+
+</script>
+
+</body>
+</html>

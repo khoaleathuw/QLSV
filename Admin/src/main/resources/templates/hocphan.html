@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: h"/>
+<head>
+    <title>Admin | Học Phần</title>
+</head>
+<body onload="showToast()">
+
+<!-- Start Left menu area -->
+<div th:replace="leftmenu :: left_menu"></div>
+<!-- End Left menu area -->
+
+<div class="all-content-wrapper">
+    <div class="header-advance-area">
+
+        <!-- Start Welcome area -->
+        <div th:replace="header :: header"></div>
+        <!-- End Welcome area -->
+
+        <!-- Start Toast area -->
+        <div id="toast">
+
+        </div>
+        <li id="mes" hidden th:text="${mess}"></li>
+        <li id="suc_err" hidden th:text="${suc_err}"></li>
+        <!-- End Toast area -->
+
+        <!-- Start Search-->
+        <br>
+        <div class="breadcome-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcome-heading">
+                                        <form th:action="@{/hocphan}" method="get" role="search"
+                                              class="sr-input-func">
+                                            <input type="text" name="keyword"
+                                                   th:value="${keyword}"
+                                                   placeholder="Tìm kiếm..."
+                                                   class="search-int form-control">
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcome-heading" style="float: right">
+                                        <form th:action="@{hocphan}" method="get">
+                                            <select th:name="maCN" onchange="this.form.submit()" class="form-control"
+                                                    style="width: 300px;">
+                                                <option th:value="null" th:selected="${mcn == null}">Tất cả</option>
+                                                <option th:each="cn, stt: ${chuyenNganhs}"
+                                                        th:value="${cn.getMaChuyenNganh()}"
+                                                        th:text="${cn.getTenChuyenNganh()}"
+                                                        th:selected="${mcn == cn.getMaChuyenNganh()}"></option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Search-->
+
+        <!-- Static Table Start -->
+        <div class="product-status mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form th:action="@{hocphan/deleteHocPhans}" method="get">
+                            <div class="product-status-wrap drp-lst">
+                                <div class="sparkline13-hd">
+                                    <div class="main-sparkline13-hd">
+                                        <h1></h1>
+                                        <a id="createHocPhanBtn" class="btn btn-info">Thêm học phần</a>
+                                        <a style="margin-top: -3px"
+                                           class="btn btn-primary glyphicon glyphicon-import btnImportFile"></a>
+                                        <button type="submit" class="btn btn-danger btn-custon-rounded-four">
+                                            <span>Xóa</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="sparkline13-graph">
+                                    <div class="datatable-dashv1-list custom-datatable-overright">
+                                        <table id="table" data-toggle="table"
+                                               data-key-events="true" data-resizable="true" data-cookie="true"
+                                               data-cookie-id-table="saveId" data-show-export="true"
+                                               data-click-to-select="true" data-toolbar="#toolbar" class="tbl">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    <div align="center">
+                                                        <i class="fa fa-check"></i>
+                                                    </div>
+                                                </th>
+                                                <th>STT</th>
+                                                <th>Mã học phần</th>
+                                                <th>Môn học</th>
+                                                <th>Số tín chỉ lý thuyết</th>
+                                                <th>Số tín chỉ thực hành</th>
+                                                <th>Học phần bắt buộc</th>
+                                                <th>Chuyên ngành</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="hocphan, status: ${hocphans}">
+                                                <td><input type="checkbox" class="checkbox" th:name="mahp"
+                                                           th:value="${hocphan.getMaHocPhan()}"></td>
+                                                <td th:text="${status.index + 1}"></td>
+                                                <td th:text="${hocphan.getMaHocPhan()}"></td>
+
+                                                <td th:if="${hocphan.getMonHoc() != null}"
+                                                    th:text="${hocphan.getMonHoc().getTenMonHoc()}"></td>
+                                                <td th:if="${hocphan.getMonHoc() == null}"></td>
+
+                                                <td th:text="${hocphan.getSoTCLT()}"></td>
+                                                <td th:text="${hocphan.getSoTCTH()}"></td>
+                                                <td>
+                                                    <input type="checkbox" disabled
+                                                           th:checked="${hocphan.isHocPhanBatBuoc()}">
+                                                </td>
+                                                <td th:text="${hocphan.getChuyenNganh().getTenChuyenNganh()}"></td>
+                                                <td>
+                                                    <a class="btnUpdateHocPhan btn btn-warning"
+                                                       th:href="@{hocphan/findHocPhan(maHocPhan=${hocphan.maHocPhan})}">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pull-right pagination">
+                                            <ul class="pagination">
+                                                <li class="page-pre">
+                                                    <a th:if="${mcn != null}"
+                                                       th:href="@{hocphan(maCN=${mcn},pageIndex=${currentPage - 1})}">‹</a>
+                                                    <a th:if="${keyword == null && mcn == null || keyword == ''}"
+                                                       th:href="@{hocphan(pageIndex=${currentPage - 1})}">‹</a>
+                                                    <a th:if="${keyword != null && keyword != ''}"
+                                                       th:href="@{hocphan(keyword=${keyword},pageIndex=${currentPage - 1})}">‹</a>
+                                                </li>
+                                                <li class="page-number"
+                                                    th:each="i : ${#numbers.sequence(0, totalPage - 1)}"
+                                                    th:classappend="${currentPage}==${i}?'active':''">
+                                                    <a th:if="${keyword != null && keyword != ''}"
+                                                       th:href="@{hocphan(keyword=${keyword},pageIndex=${i})}"
+                                                       th:text="${i + 1}"></a>
+                                                    <a th:if="${mcn != null}"
+                                                       th:href="@{hocphan(maCN=${mcn},pageIndex=${i})}"
+                                                       th:text="${i + 1}"></a>
+                                                    <a th:if="${keyword == null && mcn == null || keyword == ''}"
+                                                       th:href="@{hocphan(pageIndex=${i})}" th:text="${i + 1}"></a>
+                                                </li>
+                                                <li class="page-next">
+                                                    <a th:if="${keyword == null && mcn == null || keyword == ''}"
+                                                       th:href="@{hocphan(pageIndex=${currentPage + 1})}">›</a>
+                                                    <a th:if="${keyword != null && keyword != ''}"
+                                                       th:href="@{hocphan(keyword=${keyword},pageIndex=${currentPage + 1})}">›</a>
+                                                    <a th:if="${mcn != null}"
+                                                       th:href="@{hocphan(maCN=${mcn},pageIndex=${currentPage + 1})}">›</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="myForm">
+            <form th:action="@{/hocphan}" method="post" th:object="${hocPhan}">
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="text-center" style="color: white;">
+                                    <h3>THÔNG TIN HỌC PHẦN</h3>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <input type="hidden" id="maHocPhan" value="" th:field="*{maHocPhan}">
+
+                                <div class="form-group">
+                                    <label for="monHoc">Môn học</label>
+                                    <div>
+                                        <select value="" id="monHoc" th:field="*{monHoc.maMonHoc}"
+                                                class="form-control">
+                                            <option value="0">Chọn môn học</option>
+                                            <option th:each="monhoc, status: ${monHocs}"
+                                                    th:value="${monhoc.getMaMonHoc()}"
+                                                    th:text="${monhoc.getTenMonHoc()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class=" form-group">
+                                    <label for="tenChuyenNganh">Chuyên ngành</label>
+                                    <div>
+                                        <select value="" id="tenChuyenNganh" th:field="*{chuyenNganh.maChuyenNganh}"
+                                                class="form-control">
+                                            <option value="0">Chọn chuyên ngành</option>
+                                            <option th:each="cn, status: ${chuyenNganhs}"
+                                                    th:value="${cn.getMaChuyenNganh()}"
+                                                    th:text="${cn.getTenChuyenNganh()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="soTCLT">Số tín chỉ lý thuyết</label>
+                                    <div><input type="number" min="0" id="soTCLT" value="" th:field="*{soTCLT}"
+                                                class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="soTCTH">Số tín chỉ thực hành</label>
+                                    <div><input type="number" min="0" id="soTCTH" value="" th:field="*{soTCTH}"
+                                                class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="hocPhanBatBuoc">Học phần bắt buộc</label>
+                                    <div>
+                                        <input type="checkbox" id="hocPhanBatBuoc" value=""
+                                               th:value="true" th:field="*{hocPhanBatBuoc}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Lưu thông tin" class="btn btn-success"
+                                           style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+<!--        <div class="myFormUpdate">-->
+<!--            <form th:action="@{/hocphan}" method="post" th:object="${hocPhan}">-->
+<!--                <div class="modal fade" id="myModalUpdate" role="dialog">-->
+<!--                    <div class="modal-dialog">-->
+<!--                        <div class="modal-content">-->
+<!--                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">-->
+<!--                                <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--                                <div class="text-center" style="color: white;">-->
+<!--                                    <h3>THÔNG TIN HỌC PHẦN</h3>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="modal-body">-->
+<!--                                <input type="hidden" id="maHocPhanUpdate" value="" th:field="*{maHocPhan}">-->
+
+<!--                                <div class="form-group">-->
+<!--                                    <label for="monHocUpdate">Môn học</label>-->
+<!--                                    <div>-->
+<!--                                        <select value="" id="monHocUpdate" th:field="*{monHoc.maMonHoc}"-->
+<!--                                                class="form-control">-->
+<!--                                            <tr th:each="monhoc, status: ${monHocs}">-->
+<!--                                                <option th:value="${monhoc.getMaMonHoc()}"-->
+<!--                                                        th:text="${monhoc.getTenMonHoc()}"></option>-->
+<!--                                            </tr>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="form-group">-->
+<!--                                    <label for="soTCLTUpdate">Số tín chỉ lý thuyết</label>-->
+<!--                                    <div><input type="text" id="soTCLTUpdate" value="" th:field="*{soTCLT}"-->
+<!--                                                class="form-control">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="form-group">-->
+<!--                                    <label for="soTCTHUpdate">Số tín chỉ thực hành</label>-->
+<!--                                    <div><input type="text" id="soTCTHUpdate" value="" th:field="*{soTCTH}"-->
+<!--                                                class="form-control">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="form-group">-->
+<!--                                    <label for="hocPhanBatBuocUpdate">Học phần bắt buộc</label>-->
+<!--                                    <div>-->
+<!--                                        <input type="checkbox" id="hocPhanBatBuocUpdate" value=""-->
+<!--                                               th:value="true" th:field="*{hocPhanBatBuoc}">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class=" form-group">-->
+<!--                                    <label for="tenChuyenNganhUpdate">Chuyên ngành</label>-->
+<!--                                    <div>-->
+<!--                                        <select value="" id="tenChuyenNganhUpdate"-->
+<!--                                                th:field="*{chuyenNganh.maChuyenNganh}"-->
+<!--                                                class="form-control">-->
+<!--                                            <tr th:each="cn, status: ${chuyenNganhs}">-->
+<!--                                                <option th:value="${cn.getMaChuyenNganh()}"-->
+<!--                                                        th:text="${cn.getTenChuyenNganh()}"></option>-->
+<!--                                            </tr>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="form-group">-->
+<!--                                    <input type="submit" value="Lưu thông tin" class="btn btn-success">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+
+        <!-- Start Modal Import area -->
+        <div class="myForm1">
+            <form th:action="@{/hocphan/upload}" method="post" enctype="multipart/form-data">
+                <div class="modal fade" id="myModalImportFile" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(130, 216, 130);">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="text-center" style="color: white;">
+                                    <h3>UPLOAD FILE</h3>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div style="border-radius: 10%">
+                                    <input type="file" th:name="fileUpload"
+                                           class="form-control">
+                                    <br>
+                                    <button type="submit" class="form-control btn btn-primary">Tải lên</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- End Modal Import area -->
+
+    </div>
+</div>
+
+<div th:replace="header :: script"></div>
+
+</body>
+</html>

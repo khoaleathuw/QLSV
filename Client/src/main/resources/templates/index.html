@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="SV_Fragment :: head"/>
+<head>
+    <meta charset="UTF-8">
+    <!-- Chart CSS -->
+    <link rel="stylesheet" href="css/c3/c3.min.css">
+    <title>Trang sinh viên</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<head th:replace="SV_Fragment :: style-head"/>
+<body>
+<!-- Start Left menu area -->
+<div th:replace="SV_Fragment :: frag_menu_left"/>
+<!-- Content area -->
+<div class="all-content-wrapper">
+    <!--    Logo header mobile -->
+    <div th:replace="SV_Fragment ::frag_icon_mobile"/>
+    <!--    Header area -->
+    <div th:replace="SV_Fragment :: frag_header"/>
+    <!-- Single pro tab review Start-->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid" style="background-color: #e7ecf0">
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="width: 668px">
+                    <div class="single-cards-item" style="border-radius: 10px">
+                        <div class="single-product-text">
+                            <!--                            <img src="img/product/pro4.jpg" alt="">-->
+                            <h2 style="margin-bottom: 30px">Thông tin sinh viên</h2>
+                            <h4><a class="cards-hd-dn" href="#"><span th:text="${sinhvien.getTenSV()}"></span></a></h4>
+                            <h5><span th:text="${sinhvien.getKhoa().tenKhoa}"></span></h5>
+                            <p class="ctn-cards">MSSV: <span th:text="${sinhvien.getMaSV()}"></span> - Lớp học: <span
+                                    th:text="${sinhvien.getLopHoc().tenLop}"></span></p>
+                            <a class="follow-cards" th:href="@{/thong-tin-sinh-vien}">Xem Chi Tiết</a>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="cards-dtn">
+                                        <h3><span>2021-2025</span></h3>
+                                        <p>Khóa học</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="cards-dtn">
+                                        <h3><span th:text="${sinhvien.bacDaoTao}"></span></h3>
+                                        <p>Bậc đào tạo</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="cards-dtn">
+                                        <h3><span
+                                                th:text="${#dates.format(sinhvien.getNgaySinh(), 'dd/MM/yyyy')}"></span>
+                                        </h3>
+                                        <p>Ngày sinh</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12" style="margin-left: -20px; width: 668px">
+                    <div class="single-cards-item" style="border-radius: 10px">
+                        <div class="single-product-text">
+                            <h2>Sinh viên thực hiện</h2>
+                            <div class="row" style="margin-top: 142px;">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <div class="cards-dtn">
+                                        <img src="img/profile/khoa.jpg" alt="" srcset="" width="10%" height="10%">
+                                        <br><br>
+                                        <h3><span>Lê Duy Khoa</span></h3>
+                                        <p>2180603834</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" style="width: 236px; height: 165px">
+                    <a th:href="@{/lich-theo-tuan}">
+                        <div class="hpanel widget-int-shape responsive-mg-b-30" style="border-radius: 10px">
+                            <div class="panel-body">
+                                <div style="text-align: center; margin-bottom: 20px">
+                                    <img src="img/profile/calendar.png" alt="" srcset="" width="40%" height="40%">
+                                </div>
+                                <div class="stats-title" style="text-align: center">
+                                    <h4 style="font-size: 18px">Lịch theo tuần</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                     style="width: 236px; height: 165px; margin-left: -20px">
+                    <a th:href="@{hoc-phan/dang-ky-hoc-phan}">
+                        <div class="hpanel widget-int-shape responsive-mg-b-30" style="border-radius: 10px">
+                            <div class="panel-body">
+                                <div style="text-align: center; margin-bottom: 20px">
+                                    <img src="img/profile/dangkyhocphan.png" alt="" srcset="" width="40%" height="40%">
+                                </div>
+                                <div class="stats-title" style="text-align: center">
+                                    <h4 style="font-size: 18px">Đăng ký học phần</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                     style="width: 236px; height: 165px; margin-left: -20px">
+                    <a th:href="@{chuong-trinh-khung}">
+                        <div class="hpanel widget-int-shape responsive-mg-b-30" style="border-radius: 10px">
+                            <div class="panel-body">
+                                <div style="text-align: center; margin-bottom: 20px">
+                                    <img src="img/profile/chuongtrinhkhung.png" alt="" srcset="" width="40%"
+                                         height="40%">
+                                </div>
+                                <div class="stats-title" style="text-align: center">
+                                    <h4 style="font-size: 18px">Chương trình khung</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                     style="width: 236px; height: 165px; margin-left: -20px">
+                    <a href="lich-theo-tuan/lich-tien-do">
+                        <div class="hpanel widget-int-shape responsive-mg-b-30" style="border-radius: 10px">
+                            <div class="panel-body">
+                                <div style="text-align: center; margin-bottom: 20px">
+                                    <img src="img/profile/lichtheotiendo.png" alt="" srcset="" width="40%" height="40%">
+                                </div>
+                                <div class="stats-title" style="text-align: center">
+                                    <h4 style="font-size: 18px">Lịch theo tiến độ</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                     style="width: 236px; height: 165px; margin-left: -20px">
+                    <a th:href="@{tinh-diem-mon-hoc}">
+                        <div class="hpanel widget-int-shape responsive-mg-b-30" style="border-radius: 10px">
+                            <div class="panel-body">
+                                <div style="text-align: center; margin-bottom: 20px">
+                                    <img src="img/profile/tinhdiem.png" alt="" srcset="" width="40%" height="40%">
+                                </div>
+                                <div class="stats-title" style="text-align: center">
+                                    <h4 style="font-size: 18px">Tính điểm</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                     style="width: 236px; height: 165px; margin-left: -20px">
+                    <a th:href="@{ket-qua-hoc-tap}">
+                        <div class="hpanel widget-int-shape responsive-mg-b-30" style="border-radius: 10px">
+                            <div class="panel-body">
+                                <div style="text-align: center; margin-bottom: 20px">
+                                    <img src="img/profile/ketquahoctap.jpg" alt="" srcset="" width="40%" height="40%">
+                                </div>
+                                <div class="stats-title" style="text-align: center">
+                                    <h4 style="font-size: 18px">Kết quả học tập</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 10px">
+                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+                    <div class="charts-single-pro mg-t-30 table-mg-btm-0-pro dk-mg-b-0-desk"
+                         style="margin-top: 1px; width: 500px; height: 400px; border-radius: 10px">
+                        <div class="alert-title col-lg-12" style="margin-bottom: 20px">
+                            <div class="col-lg-5">
+                                <h2 style="font-weight: bold; font-size: 20px">Kết quả học tập</h2>
+                            </div>
+                            <div class="col-lg-7" style="margin-top: 14px">
+                                <select id="cboChonHocKyKQHT" class="form-control">
+                                    <option value="0">Chọn học kỳ</option>
+                                    <option th:each="hk: ${HocKyLHP}"
+                                            th:value="${hk.getMaHK()}"
+                                            th:text="'HK' + ${hk.getThuTuHocKy()} + ' (' + ${hk.getNamBatDau()} + ' - ' + ${hk.getNamKetThuc()} + ')'">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="bar1-chart" style="max-width: 100%">
+                            <canvas id="barchart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+<!--&lt;!&ndash;                Biểu đồ kết quả học tập&ndash;&gt;-->
+<!--                <script type="text/javascript">-->
+<!--                    $(document).ready(function () {-->
+<!--                        $('#cboChonHocKyKQHT').on('change', function () {-->
+<!--                            var maHK;-->
+<!--                            maHK = $(this).val();-->
+<!--                            $.ajax({-->
+<!--                                url: "/BieuDoKQHT",-->
+<!--                                type: 'POST',-->
+<!--                                data: jQuery.param({maHK: maHK}),-->
+<!--                                success: function (data) {-->
+<!--                                    const tenHP = [];-->
+<!--                                    const diemCuaToi = [];-->
+<!--                                    const diemTB = [];-->
+<!--                                    var tenLHP = document.getElementById('lhp');-->
+<!--                                    var diemhtml = document.getElementById('diemMonHoc');-->
+<!--                                    var tbhtml = document.getElementById('diemTBLHP');-->
+<!--                                    tenLHP.innerHTML = '';-->
+<!--                                    diemhtml.innerHTML = '';-->
+<!--                                    tbhtml.innerHTML = '';-->
+<!--                                    var bieudo1 = document.getElementById("bieudo");-->
+<!--                                    bieudo.innerHTML = '';-->
+<!--                                    for (var i = 0; i < data.length; i++) {-->
+<!--                                        if (data[i].tenHP === null || data[i].diemCuaToi === null){-->
+<!--                                            tenLHP.innerHTML = '';-->
+<!--                                            diemhtml.innerHTML = '';-->
+<!--                                            tbhtml.innerHTML = '';-->
+<!--                                        }else{-->
+<!--                                            tenHP.push(data[i].tenHP);-->
+<!--                                            diemCuaToi.push(data[i].diemCuaToi);-->
+<!--                                            diemTB.push(data[i].diemTrungBinhMon);-->
+<!--                                            tenLHP.innerHTML = `<p>ten hp: ${tenHP}</p>`;-->
+<!--                                            diemhtml.innerHTML = `<p>diem cua toi: ${diemCuaToi}</p>`;-->
+<!--                                            tbhtml.innerHTML = `<p>diem tb: ${diemTB}</p>`;-->
+<!--                                        }-->
+<!--                                    }-->
+<!--                                }-->
+<!--                            });-->
+<!--                        });-->
+<!--                    });-->
+<!--                    barchart();-->
+<!--                </script>-->
+
+                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                    <div class="charts-single-pro mg-t-30 table-mg-btm-0-pro dk-mg-b-0-desk"
+                         style="margin-top: 1px; width: 320px; height: 400px; margin-left: 70px; border-radius: 10px ">
+                        <div class="alert-title">
+                            <h2 style="font-weight: bold; font-size: 20px">Tiến độ học tập</h2>
+                        </div>
+                        <div class="row">
+                            <div style="color: #3760e6">
+                                <h5 style="float: left">Tổng: <span id="soTCTheoCN" th:text="${soTCTheoCN}"></span> tín chỉ <br>
+                                    <div style="text-align: center">100%</div>
+                                </h5>
+                            </div>
+                            <div style="color: #0dbd37">
+                                <h5 style="float: right">Đã học : <span id="soTCDaHoc" th:text="${soTCDaHoc}"></span> tín chỉ <br>
+                                    <div style="text-align: center"><span id="phanTram"></span></div>
+                                </h5>
+                            </div>
+                        </div>
+<!--                        Tính phần trăm học phần-->
+                        <script>
+                            $(document).ready(function () {
+                                var soTCTheoCN = $('#soTCTheoCN').text();
+                                var soTCDaHoc = $('#soTCDaHoc').text();
+                                var phanTram = (soTCDaHoc / soTCTheoCN) * 100;
+                                phanTram = phanTram.toFixed();
+                                $('#phanTram').text(phanTram + '%');
+                            });
+
+                        </script>
+                        <div style="text-align: center">
+                            <div id="chart"></div>
+                        </div>
+                        <h4 style="text-align: center"><span th:text="${soTCDaHoc}"></span>/<span th:text="${soTCTheoCN}"></span></h4>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <div class="charts-single-pro mg-t-30 table-mg-btm-0-pro dk-mg-b-0-desk"
+                         style="margin-top: 1px; width: 446px; height: 400px; border-radius: 10px; margin-left: 70px">
+                        <div class="alert-title col-lg-12">
+                            <div class="col-lg-5">
+                                <h2 style="font-weight: bold; font-size: 20px">Lớp học phần</h2>
+                            </div>
+                            <div class="col-lg-7" style="margin-top: 14px">
+                                <select id="cboChonHocKyLHP" name="cboChonHocKyLHP" class="form-control">
+                                    <option value="0">Chọn học kỳ</option>
+                                    <option th:each="hk: ${HocKyLHP}"
+                                            th:value="${hk.getMaHK()}"
+                                            th:text="'HK' + ${hk.getThuTuHocKy()} + ' (' + ${hk.getNamBatDau()} + ' - ' + ${hk.getNamKetThuc()} + ')'">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div>
+                                <span id="monHoc"></span>
+                                <span id="soTC" style="float: right" class="text-center"></span>
+                            </div>
+                            <div class="table-responsive wd-tb-cr" id="style-1">
+                                <div style="height: 260px" class="scrollbar" >
+                                    <table class="table table-striped">
+                                        <tbody id="tableLopHocPhanTheoHK">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+<!--                        Lớp học phần theo học kỳ-->
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('#cboChonHocKyLHP').on('change', function () {
+                                    var maHK;
+                                    maHK = $(this).val();
+                                    $.ajax({
+                                        url: "/LHPInHK",
+                                        type: 'POST',
+                                        data: jQuery.param({maHK: maHK}),
+                                        success: function (data) {
+                                            var LHP = document.getElementById('monHoc');
+                                            var soTC = document.getElementById('soTC');
+                                            var table = document.getElementById('tableLopHocPhanTheoHK');
+                                            table.innerHTML = '';
+                                            LHP.innerHTML = '';
+                                            soTC.innerHTML = '';
+                                            var row = '';
+                                            for (var i = 0; i < data.length; i++) {
+                                                LHP.innerHTML = `<span>Môn học/học phần</span>`;
+                                                soTC.innerHTML = `<span style="float: right" class="text-center">Số tín chỉ</span>`
+                                                row = `<tr><td><span class="text-success font-bold">${data[i].maLHP}</span><br>${data[i].tenLHP}</td><td>${data[i].soTC}</td></tr>`;
+                                                table.innerHTML += row;
+                                                if (data[i].maLHP === 0) {
+                                                    table.innerHTML = '';
+                                                    LHP.innerHTML = '';
+                                                    soTC.innerHTML = '';
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Script-->
+<div th:replace="SV_Fragment :: script"/>
+<!-- Chart JS
+============================================ -->
+<script th:src="@{/js/chart/jquery.peity.min.js}"></script>
+<script th:src="@{/js/peity/peity-active.js}"></script>
+<!-- Charts JS
+============================================ -->
+<script th:src="@{/js/charts/Chart.js}"></script>
+<script th:src="@{/js/charts/bar-chart.js}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js'></script>
+<script th:src="@{/js/charts/activity-chart.js}"></script>
+</body>
+</html>

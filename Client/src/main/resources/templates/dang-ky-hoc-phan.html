@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="SV_Fragment :: head"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký học phần</title>
+    <!-- modals CSS -->
+    <link rel="stylesheet" th:href="@{/css/modals.css}">
+</head>
+<head th:replace="SV_Fragment :: style-head"/>
+<body>
+<!-- Start Left menu area -->
+<div th:replace="SV_Fragment :: frag_menu_left"/>
+<!-- Content area -->
+<div class="all-content-wrapper">
+    <!--    Logo header mobile -->
+    <div th:replace="SV_Fragment ::frag_icon_mobile"/>
+    <!--    Header area -->
+    <div th:replace="SV_Fragment :: frag_header"/>
+    <!-- Single pro tab review Start-->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="basic-login-inner inline-basic-form">
+                        <form action="#">
+                            <div class="form-group-inner">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                        <label class="login2 pull-right pull-right-pro">Chọn Học Kỳ</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                        <div class="form-select-list">
+                                            <form th:action="@{/hoc-phan/dang-ky-hoc-phan}" method="get">
+                                                <select class="form-control custom-select-value" th:name="maHK"
+                                                        th:onchange="this.form.submit()">
+                                                    <option value="">Chọn đợt đăng ký</option>
+                                                    <option th:each="hk: ${HKLHP}"
+                                                            th:value="${hk.getMaHK()}"
+                                                            th:text="'Học kỳ ' + ${hk.getThuTuHocKy()} + ' (' + ${hk.getNamBatDau()} + ' - ' + ${hk.getNamKetThuc()} + ')'"
+                                                            th:selected="${maHK == hk.getMaHK()}">
+                                                    </option>
+                                                </select>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="sparkline13-list">
+                        <div class="sparkline13-hd">
+                            <div class="main-sparkline13-hd">
+                                <h1>Môn học/học phần đang chờ đăng ký</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table table-bordered" width="100%">
+                        <thead>
+                        <tr class="active">
+                            <th style="min-width: 20px">STT</th>
+                            <th style="min-width: 150px; text-align: center">Mã học phần</th>
+                            <th style="min-width: 200px; text-align: center">Tên môn học/học phần</th>
+                            <th style="text-align: center">Số Tín Chỉ</th>
+                            <th style="text-align: center">Bắt Buộc</th>
+                            <th style="text-align: center">học phần: học trước (a),
+                                tiên quyết (b),
+                                song hành (c)
+                            </th>
+                            <th style="text-align: center">Đăng Ký</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="hp, status : ${danhsachHP}">
+                            <td style="min-widtd: 20px" th:text="${status.index + 1}"></td>
+                            <td style="min-widtd: 150px; text-align: center" th:text="${hp.getMaHocPhan()}"></td>
+                            <td style="min-widtd: 200px; text-align: center"
+                                th:text="${hp.getMonHoc().getTenMonHoc()}"></td>
+                            <td style="text-align: center" th:text="${hp.getSoTCLT()}+${hp.getSoTCTH()}"></td>
+                            <td style="text-align: center" th:if="${hp.hocPhanBatBuoc == true}">
+                                <i style="color: #63f34e; font-size: 20px" class="fa fa-check-circle"></i>
+                            </td>
+                            <td style="text-align: center" th:if="${hp.hocPhanBatBuoc == false}">
+                                <i style="color: red; font-size: 20px" class="fa fa-times-circle"></i>
+                            </td>
+                            <td></td>
+                            <td style="text-align: center">
+                                <button type="button" class="btn btn-custon-two btn-success"
+                                        th:onclick="xemLopHocPhan([[${hp.maHocPhan}]],[[${maHK}]])">Đăng Ký
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="sparkline13-list">
+                                <div class="sparkline13-hd">
+                                    <div class="main-sparkline13-hd">
+                                        <h1>Lớp học phần chờ đăng ký</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table class="table table-bordered" width="100%">
+                                <thead>
+                                <tr class="active">
+                                    <th>Mã lớp HP</th>
+                                    <th>Học phần</th>
+                                    <th>Lớp học phần</th>
+                                    <th>Đã đăng ký</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableLopHocPhan">
+                                </tbody>
+                            </table>
+                            <script>
+                                function xemLopHocPhan(id, hocKy) {
+                                    $.ajax({
+                                        url: "/hoc-phan/dang-ky-hoc-phan/lop-hoc-phan",
+                                        type: 'POST',
+                                        data: jQuery.param({maHocPhan: id, maHocKy: hocKy}),
+                                        beforeSend: function () {
+                                            loadingMark();
+                                        },
+                                        success: function (data) {
+                                            removeLoadingMark();
+                                            var table = document.getElementById('tableLopHocPhan');
+                                            table.innerHTML = '';
+                                            var row = '';
+                                            for (var i = 0; i < data.length; i++) {
+                                                row = `<tr onclick="xemCTLHP(${data[i].maLopHocPhan})"><td>${data[i].maLopHocPhan}</td><td>${data[i].tenLop}</td><td>${data[i].tenVietTat} (${data[i].trangThai})</td><td>${data[i].soLuongDangKyHienTai}/${data[i].soLuongDangKyToiDa}</td></tr>`;
+                                                table.innerHTML += row;
+                                            }
+                                        },
+                                    });
+                                }
+
+                                function removeLoadingMark() {
+                                    $('.k-loading-mask').remove();
+                                }
+
+                                function loadingMark() {
+                                    var html = '<div class="k-loading-mask" style="width: 100%;height: 100%;top: 0px;left: 0px;z-index: 999;display: block;background-color: #607d8b2b;position: fixed;bottom: 0px;"><i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="position:absolute;left:45%;color:#4287f5;margin-top:20%;font-size:150px;"></i></div>';
+                                    $(html).appendTo(document.body);
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="sparkline13-list">
+                                <div class="sparkline13-hd">
+                                    <div class="main-sparkline13-hd" id="title-cthp">
+                                        <h1>Chi tiết lớp học phần</h1>
+                                    </div>
+                                </div>
+
+                                <form action="/hoc-phan/dang-ky-hoc-phan/dang-ky" method="post"
+                                      style="display: flex">
+                                    <input type="button" class="btn btn-custon-four btn-warning" data-toggle="modal"
+                                           data-target="#WarningModalhdbgcl" disabled id="btn-kiemtra"
+                                           value="Xem học phần trùng">
+                                    <div id="input-dkhp">
+                                    </div>
+                                    <select class="form-control custom-select-value" name="nhomTH" id="selectNTH">
+                                        <option value="0">Nhóm Thực Hành</option>
+                                    </select>
+                                    <input id="btn-dangky" type="submit" class="btn btn-custon-four btn-success"
+                                           value="Đăng Ký Học Phần" disabled>
+                                </form>
+                                <div id="WarningModalhdbgcl"
+                                     class="modal modal-edu-general Customwidth-popup-WarningModal fade" role="dialog">
+                                    <div class="modal-dialog" style="width: 80vw">
+                                        <div class="modal-content">
+                                            <div class="modal-header header-color-modal bg-color-3">
+                                                <h4 class="modal-title">Kiểm Tra Học Phần Trùng</h4>
+                                                <div class="modal-close-area modal-close-df">
+                                                    <a class="close" data-dismiss="modal" href="#"><i
+                                                            class="fa fa-close"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h2 id="titleHocPhanTrung">Chưa chọn môn học!</h2>
+                                                <table class="table table-bordered" width="100%">
+                                                    <thead>
+                                                    <tr class="active">
+                                                        <th>Môn học</th>
+                                                        <th>Tiết học</th>
+                                                        <th>CS-Phòng học</th>
+                                                        <th>Giáo viên</th>
+                                                        <th>Ngày học</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="tableHocPhanTrung">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer warning-md">
+                                                <a data-dismiss="modal" href="#">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table class="table table-bordered" width="100%">
+                                <thead>
+                                <tr class="active">
+                                    <th>Nhóm TH</th>
+                                    <th>Tiết học</th>
+                                    <th>CS-Phòng học</th>
+                                    <th>Giáo viên</th>
+                                    <th>Ngày học</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-cthp">
+                                </tbody>
+                            </table>
+                            <script>
+                                function xemCTLHP(id) {
+                                    const select = document.getElementById('selectNTH');
+                                    $.ajax({
+                                        url: "/hoc-phan/dang-ky-hoc-phan/chi-tiet-lop-hoc-phan",
+                                        type: 'POST',
+                                        data: jQuery.param({maLHP: id}),
+                                        beforeSend: function () {
+                                            loadingMark();
+                                        },
+                                        success: function (data) {
+                                            removeLoadingMark();
+                                            var table = document.getElementById('table-cthp');
+                                            table.innerHTML = '';
+                                            select.innerHTML = '';
+                                            document.getElementById('title-cthp').innerHTML = `<h1>Chi tiết lớp học phần: ${id}</h1>`;
+                                            document.getElementById('input-dkhp').innerHTML =
+                                                `<input type="hidden" name="maLHP" value="${id}"><input type="hidden" name="maHocKy" value="[[${maHK}]]">`;
+                                            document.getElementById('btn-kiemtra').disabled = false;
+                                            var row = '';
+                                            for (var i = 0; i < data.length; i++) {
+                                                row = `<tr><td>${data[i].nhomTH}</td><td>${data[i].tietHoc}</td><td>${data[i].coSo} ${data[i].phongHoc}</td><td>${data[i].tenGiaoVien}</td><td>${data[i].ngayBatDau} - ${data[i].ngayKetThuc}</td></tr>`;
+                                                table.innerHTML += row;
+                                                if (data[i].nhomTH > 0)
+                                                    select.innerHTML += `<option value="${data[i].nhomTH}">${data[i].nhomTH}</option>`;
+                                            }
+
+                                        },
+                                    });
+                                    xemCTLHPTheoNhomTH(id);
+                                    select.setAttribute('onchange', 'xemCTLHPTheoNhomTH(' + id + ')');
+                                }
+
+                                function xemCTLHPTheoNhomTH(id) {
+                                    const select = document.getElementById('selectNTH');
+                                    const value = select.value;
+                                    $.ajax({
+                                        url: "/hoc-phan/dang-ky-hoc-phan/kiem-tra-trung",
+                                        type: 'POST',
+                                        data: jQuery.param({maLHP: id, nhomTH: value}),
+                                        beforeSend: function () {
+                                            loadingMark();
+                                        },
+                                        success: function (data) {
+                                            removeLoadingMark();
+                                            if (data.length > 0) {
+                                                document.getElementById('titleHocPhanTrung').innerHTML = "Đã có học phần trùng";
+                                                document.getElementById('btn-dangky').disabled = true;
+                                            } else {
+                                                document.getElementById('titleHocPhanTrung').innerHTML = "Không có học phần trùng";
+                                                document.getElementById('btn-dangky').disabled = false;
+                                            }
+                                            var table = document.getElementById('tableHocPhanTrung');
+                                            table.innerHTML = '';
+                                            var row = '';
+                                            for (var i = 0; i < data.length; i++) {
+                                                row = `<tr><td>${data[i].monHoc}</td><td>${data[i].tietHoc}</td><td>${data[i].coSoPhong}</td><td>${data[i].giaoVien}</td><td>${data[i].ngayHoc}</td></tr>`;
+                                                table.innerHTML += row;
+                                            }
+                                        },
+                                    });
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="sparkline13-list">
+                        <div class="sparkline13-hd">
+                            <div class="main-sparkline13-hd">
+                                <div class="row">
+                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                                        <h1>Lớp học phần đã đăng ký trong học kỳ này</h1>
+                                    </div>
+                                    <div style="float: left" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                        <button th:onclick="window.open('/hoc-phan/dang-ky-hoc-phan/in-lich')"
+                                                style="background-color: #1da1f2; height: 25px; border: none; border-radius: 3px; color: #fff">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table table-bordered" width="100%">
+                        <thead>
+                        <tr class="active">
+                            <th>STT</th>
+                            <th>Mã lớp học phần</th>
+                            <th>Tên môn học/học phần</th>
+                            <th>Lớp học dự kiến</th>
+                            <th>TC</th>
+                            <th>Ngày ĐK</th>
+                            <th>Trạng thái Lớp học phần</th>
+                            <th colspan="2">Hành Động</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-lhpdadk" th:each="hocPhan, i : ${listHocPhanDaDK}">
+                        <tr th:unless="${listHocPhanDaDK}">
+                            <td colspan="9">Không tìm thấy lớp học phần đã đăng ký</td>
+                        </tr>
+                        <tr>
+                            <td th:text="${i.index+1}"></td>
+                            <td th:text="${hocPhan.maLopHocPhan}"></td>
+                            <td th:text="${hocPhan.tenLopHocPhan}"></td>
+                            <td th:text="${hocPhan.lopHocDuKien}"></td>
+                            <td th:text="${hocPhan.soTC}"></td>
+                            <td th:text="${hocPhan.ngayDangKy}"></td>
+                            <td th:text="${hocPhan.trangThai}"></td>
+                            <td>
+                                <input type="button" class="btn btn-custon-four btn-primary"
+                                       th:onclick="loadHocPhanDangKy([[${hocPhan.maLopHocPhan}]])"
+                                       value="Xem" data-toggle="modal" data-target="#PrimaryModalhdbgcl">
+                            </td>
+                            <td>
+                                <form action="/hoc-phan/dang-ky-hoc-phan/xoa-dang-ky" method="get">
+                                    <input type="hidden" name="maLHP" th:value="${hocPhan.maLopHocPhan}">
+                                    <input type="hidden" name="maHocKy" th:value="${maHK}">
+                                    <input type="submit" class="btn btn-custon-four btn-danger" value="Xoá">
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="PrimaryModalhdbgcl" class="modal modal-edu-general default-popup-PrimaryModal fade"
+                     role="dialog">
+                    <div class="modal-dialog" style="width: 80vw">
+                        <div class="modal-content">
+                            <div class="modal-header header-color-modal bg-color-1">
+<!--                                <h4 class="modal-title">BG Color Header Modal</h4>-->
+                                <div class="modal-close-area modal-close-df">
+                                    <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <i class="educate-icon educate-checked modal-check-pro"></i>
+                                <h2>Thông Tin Học Phần Đã Đăng Ký!</h2>
+                                <table class="table table-bordered" width="100%">
+                                    <thead>
+                                    <tr class="active">
+                                        <th>Lịch Học</th>
+                                        <th>Nhóm</th>
+                                        <th>Phòng</th>
+                                        <th>Dãy Nhà</th>
+                                        <th>Cơ Sở</th>
+                                        <th>Giáo viên</th>
+                                        <th>Thời Gian</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tableHocPhanDaDangKy">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <a style="cursor: pointer" data-dismiss="modal">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function loadHocPhanDangKy(id) {
+                        $.ajax({
+                            url: "/hoc-phan/dang-ky-hoc-phan/xem-lop-hoc-phan",
+                            type: 'POST',
+                            data: jQuery.param({maLHP: id}),
+                            success: function (data) {
+                                var table = document.getElementById('tableHocPhanDaDangKy');
+                                var row = '';
+                                table.innerHTML = '';
+                                for (var i = 0; i < data.length; i++) {
+                                    row = `<tr><td>${data[i].lichHoc}</td><td>${data[i].nhom}</td><td>${data[i].phong}</td><td>${data[i].dayNha}</td><td>${data[i].coSo}</td><td>${data[i].giaoVien}</td><td>${data[i].thoiGian}</td></tr>`;
+                                    table.innerHTML += row;
+                                }
+                            },
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+    <!--    Footer-->
+    <div th:replace="SV_Fragment :: frag_footer"/>
+</div>
+<!-- Script-->
+<div th:replace="SV_Fragment :: script"/>
+</body>
+</html>

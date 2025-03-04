@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="SV_Fragment :: head"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Đổi mật khẩu</title>
+</head>
+<head th:replace="SV_Fragment :: style-head"/>
+
+<body onload="showToast()">
+<!-- Start Left menu area -->
+<div th:replace="SV_Fragment :: frag_menu_left"/>
+<div class="all-content-wrapper">
+    <!--    Logo header mobile -->
+    <div th:replace="SV_Fragment ::frag_icon_mobile"/>
+    <!--    Header area -->
+    <div th:replace="SV_Fragment :: frag_header"/>
+    <!-- Start Toast area -->
+    <div id="toast">
+    </div>
+    <span id="mes" hidden th:text="${mess}"></span>
+    <span id="suc_err" hidden th:text="${suc_err}"></span>
+    <!-- End Toast area -->
+    <!-- Single pro tab review Start-->
+    <div class="password-meter-area mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                    <div style="border-radius: 6px" class="sparkline12-list mg-t-30 responsive-mg-b-0">
+                        <div class="sparkline10-hd">
+                            <div class="main-sparkline10-hd">
+                                <h1>Đổi <span class="password-mt-none">Mật</span> Khẩu</h1>
+                            </div>
+                        </div>
+                        <div class="sparkline10-graph">
+                            <div id="pwd-container3">
+                                <form action="/doi-mat-khau" method="post">
+                                    <div class="form-group">
+                                        <label for="oldpassword">Mật khẩu cũ<span class="red_color">(*)</span></label>
+                                        <input type="password" required="required" th:name="oldpassword"
+                                               class="form-control" id="oldpassword" placeholder="Nhập mật khẩu cũ">
+                                    </div>
+                                    <div class="form-group" head-strong-password>
+                                        <label for="newpassword">Mật khẩu mới<span class="red_color">(*)</span></label>
+                                        <input type="password" required="required" th:name="newpassword"
+                                               class="form-control example3" name="newpassword" id="newpassword"
+                                               placeholder="Nhập mật khẩu mới">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="repassword">Xác nhận mật khẩu mới<span class="red_color">(*)</span></label>
+                                        <input type="password" required="required" th:name="repassword"
+                                               class="form-control example3" name="repassword" id="repassword"
+                                               placeholder="Xác nhận lại mật khẩu">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <input type="submit" class="btn btn-custon-four btn-primary"
+                                                       value="Lưu">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    Footer-->
+    <!--    <div th:replace="SV_Fragment :: frag_footer"/>-->
+</div>
+<!-- Script-->
+<div th:replace="SV_Fragment :: script"/>
+</body>
+</html>
